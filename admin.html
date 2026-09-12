@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kamal Mobile - Admin Panel</title>
+  <style>
+    * { box-sizing: border-box; font-family: sans-serif; margin: 0; padding: 0; }
+    body { background: #f4f6f9; padding: 20px; }
+    .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    h2 { color: #1e293b; margin-bottom: 20px; text-align: center; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; color: #475569; }
+    input, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 16px; }
+    button { width: 100%; padding: 12px; background: #2563eb; color: #fff; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; }
+    button:disabled { background: #94a3b8; }
+    .status { margin-top: 15px; text-align: center; font-weight: bold; }
+  </style>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>📱 कमल मोबाइल - नया फोन जोड़ें</h2>
+  <form id="addProductForm">
+    <div class="form-group">
+      <label>मोबाइल का नाम (Name)</label>
+      <input type="text" id="pName" placeholder="उदा: Vivo Y20" required>
+    </div>
+    <div class="form-group">
+      <label>ब्रांड (Brand)</label>
+      <input type="text" id="pBrand" placeholder="उदा: Vivo" required>
+    </div>
+    <div class="form-group">
+      <label>कीमत (Price in ₹)</label>
+      <input type="number" id="pPrice" placeholder="उदा: 11999" required>
+    </div>
+    <div class="form-group">
+      <label>RAM / Storage</label>
+      <input type="text" id="pRam" placeholder="उदा: 4GB / 64GB">
+    </div>
+    <div class="form-group">
+      <label>नेटवर्क (Network)</label>
+      <select id="pNetwork">
+        <option value="4G">4G</option>
+        <option value="5G">5G FAST</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>फोन की फोटो चुनें (Gallery Image)</label>
+      <input type="file" id="pImage" accept="image/*" required>
+    </div>
+    <button type="submit" id="submitBtn">मोबाइल अपलोड करें</button>
+  </form>
+  <div class="status" id="statusMsg"></div>
+</div>
+
+<script>
+  // Firebase Configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAy1yB5KLjngy1sSMA5Aunup9Tvyengalg",
+    authDomain: "kamal-mobile-d8ba5.firebaseapp.com",
+    projectId: "kamal-mobile-d8ba5",
+    storageBucket: "kamal-mobile-d8ba5.firebasestorage.app",
+    messagingSenderId: "1065271731721",
+    appId: "1:1065271731721:web:f4163ef79q1409d50cb2d8"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const form = document.getElementById('addProductForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusMsg = document.getElementById('statusMsg');
+
+  // ImgBB API Key for free image hosting
+  const IMGBB_API_KEY = "c1869e5d4a460912f27576f3ee824c0d"; 
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    statusMsg.style.color = "#2563eb";
+    statusMsg.textContent = "फोटो अपलोड हो रही है...";
+
+    const fileInput = document.getElementById('pImage');
+    const file = fileInput.files[0];
+
+    try {
+      // Upload image to ImgBB
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+        method: 'POST',
+        body: formData
+      });
+      const imgData = await imgRes.json();
+
+      if (!imgData.success) throw new Error("इमेज अपलोड विफल रहा।");
+
+      const imageUrl = imgData.data.url;
+
+      statusMsg.textContent = "डेटाबेस में सेव हो रहा है...";
+
+      // Save to Firestore
+      await db.collection("mobiles").add({
+        name: document.getElementById('pName').value.trim(),
+        brand: document.getElementById('pBrand').value.trim(),
+        price: parseInt(document.getElementById('pPrice').value),
+        ram_storage: document.getElementById('pRam').value.trim(),
+        network: document.getElementById('pNetwork').value,
+        image_url: imageUrl,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      statusMsg.style.color = "#16a34a";
+      statusMsg.textContent = "✅ मोबाइल सफलतापूर्वक जुड़ गया!";
+      form.reset();
+    } catch (err) {
+      console.error(err);
+      statusMsg.style.color = "#dc2626";
+      statusMsg.textContent = "❌ त्रुटि: " + err.message;
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>

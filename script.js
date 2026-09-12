@@ -1,99 +1,199 @@
- const productsData = [
-  { id: 101, name: "Vivo Y200", brand: "Vivo", network: "5G", ram: "8GB RAM / 128GB", price: 21999, status: "in", icon: "📱" },
-  { id: 102, name: "Samsung Galaxy M34", brand: "Samsung", network: "5G", ram: "6GB RAM / 128GB", price: 16499, status: "in", icon: "📱" },
-  { id: 103, name: "Redmi Note 13", brand: "Redmi", network: "5G", ram: "8GB RAM / 256GB", price: 17999, status: "in", icon: "📱" },
-  { id: 104, name: "OnePlus Nord CE 4", brand: "OnePlus", network: "5G", ram: "8GB RAM / 128GB", price: 24999, status: "out", icon: "📱" },
-  { id: 105, name: "Realme Narzo 60", brand: "Realme", network: "4G", ram: "6GB RAM / 64GB", price: 11999, status: "in", icon: "📱" }
-];
-
-const repairDatabase = {
-  "REP-1001": { model: "Vivo Y20", issue: "स्क्रीन बदलना", status: "Repairing (काम चालू है)", time: "आज शाम 5 बजे तक" },
-  "REP-1002": { model: "Samsung A12", issue: "बैटरी रिप्लेसमेंट", status: "Ready (तैयार है, दुकान से ले जाएं)", time: "तुरंत ले सकते हैं" }
+ // Firebase Configuration (Kamal Mobile Database)
+const firebaseConfig = {
+  apiKey: "AIzaSyAy1yB5KLjngy1sSMA5Aunup9Tvyengalg",
+  authDomain: "kamal-mobile-d8ba5.firebaseapp.com",
+  projectId: "kamal-mobile-d8ba5",
+  storageBucket: "kamal-mobile-d8ba5.firebasestorage.app",
+  messagingSenderId: "1065271731721",
+  appId: "1:1065271731721:web:f4163ef79q1409d50cb2d8"
 };
 
+// Initialize Firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.firestore();
+
+// WhatsApp Number Configuration
+const WHATSAPP_NUMBER = "919981176713";
+
+// DOM Elements
 const productGrid = document.getElementById("productGrid");
 const searchInput = document.getElementById("searchInput");
 const brandFilter = document.getElementById("brandFilter");
 const networkFilter = document.getElementById("networkFilter");
 const sortFilter = document.getElementById("sortFilter");
+const emptyState = document.getElementById("emptyState");
+const repairForm = document.getElementById("repairForm");
+const trackBtn = document.getElementById("trackBtn");
+const trackResult = document.getElementById("trackResult");
+const trackIdInput = document.getElementById("trackIdInput");
 
-function renderProducts() {
-  let filtered = productsData.filter(p => {
-    const matchesSearch = p.name.toLowerCase().includes(searchInput.value.toLowerCase()) || p.ram.toLowerCase().includes(searchInput.value.toLowerCase());
-    const matchesBrand = brandFilter.value === "all" || p.brand === brandFilter.value;
-    const matchesNetwork = networkFilter.value === "all" || p.network === networkFilter.value;
-    return matchesSearch && matchesBrand && matchesNetwork;
+let productsData = [];
+
+// Initialize Page
+document.addEventListener("DOMContentLoaded", () => {
+  const yearEl = document.getElementById("year");
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+  
+  listenToProducts();
+  initNavigation();
+});
+
+// Firestore Realtime Listener
+function listenToProducts() {
+  db.collection("mobiles").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+    productsData = [];
+    snapshot.forEach((doc) => {
+      productsData.push({ id: doc.id, ...doc.data() });
+    });
+    renderProducts(productsData);
+  }, (error) => {
+    console.error("Firestore Fetch Error:", error);
+    if (emptyState) {
+      emptyState.textContent = "डेटा लोड करने में समस्या आई।";
+      emptyState.classList.remove("hidden");
+    }
   });
+}
 
-  if (sortFilter.value === "low-high") filtered.sort((a, b) => a.price - b.price);
-  if (sortFilter.value === "high-low") filtered.sort((a, b) => b.price - a.price);
-
+// Render Product Cards
+function renderProducts(products) {
+  if (!productGrid) return;
   productGrid.innerHTML = "";
-  document.getElementById("emptyState").classList.toggle("hidden", filtered.length > 0);
 
-  filtered.forEach(p => {
+  if (!products || products.length === 0) {
+    if (emptyState) emptyState.classList.remove("hidden");
+    return;
+  }
+
+  if (emptyState) emptyState.classList.add("hidden");
+
+  products.forEach(product => {
     const card = document.createElement("div");
     card.className = "product-card";
-    const waText = encodeURIComponent(`नमस्ते Kamal Mobile and Video Graphy, मुझे ${p.name} (${p.ram}) का रेट और उपलब्धता पूछनी है।`);
-    
+
+    const is5G = product.network && product.network.toUpperCase().includes("5G");
+    const badgeHTML = is5G ? `<span class="badge red-badge">5G FAST</span>` : `<span class="badge">BEST SELLER</span>`;
+
+    // फोटो दिखाने का लॉजिक
+    const mediaHTML = (product.image_url && product.image_url.startsWith("http")) 
+      ? `<div class="product-img-wrap" style="height:180px; overflow:hidden; display:flex; align-items:center; justify-content:center; margin-bottom:10px;"><img src="${product.image_url}" alt="${product.name}" style="max-height:100%; max-width:100%; object-fit:contain;" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'product-icon\\'>📱</div>';"></div>`
+      : `<div class="product-icon">📱</div>`;
+
+    const message = encodeURIComponent(`नमस्ते Kamal Mobile, मुझे ${product.name} (${product.ram_storage || ''}) खरीदना है। कीमत: ₹${product.price ? product.price.toLocaleString("en-IN") : 'संपर्क करें'}`);
+
     card.innerHTML = `
-      <span class="stock-tag ${p.status}">${p.status === "in" ? "उपलब्ध है" : "Out of Stock"}</span>
-      <div class="product-icon">${p.icon}</div>
-      <div>
-        <h3>${p.name} <small style="font-size:12px; color:var(--muted);">${p.network}</small></h3>
-        <p class="ram-spec">${p.ram}</p>
-        <div class="price-row">
-          <strong>₹${p.price.toLocaleString("en-IN")}</strong>
-        </div>
-      </div>
-      <a href="https://wa.me/919981176713?text=${waText}" target="_blank" class="btn primary full-width">💬 WhatsApp पर पूछें</a>
+      ${badgeHTML}
+      ${mediaHTML}
+      <h3>${product.name}</h3>
+      <p class="ram-spec">${product.ram_storage || 'Standard Specs'}</p>
+      <div class="price">₹${product.price ? product.price.toLocaleString("en-IN") : 'Call for Price'}</div>
+      <a href="https://wa.me/${WHATSAPP_NUMBER}?text=${message}" target="_blank" class="btn primary full-width">WhatsApp पर खरीदें</a>
     `;
+
     productGrid.appendChild(card);
   });
 }
 
-searchInput.addEventListener("input", renderProducts);
-brandFilter.addEventListener("change", renderProducts);
-networkFilter.addEventListener("change", renderProducts);
-sortFilter.addEventListener("change", renderProducts);
+// Filter Logic
+function applyFilters() {
+  const searchTerm = searchInput ? searchInput.value.toLowerCase().trim() : "";
+  const selectedBrand = brandFilter ? brandFilter.value : "all";
+  const selectedNetwork = networkFilter ? networkFilter.value : "all";
+  const selectedSort = sortFilter ? sortFilter.value : "default";
 
-document.getElementById("repairForm").addEventListener("submit", function(e) {
-  e.preventDefault();
-  const name = document.getElementById("custName").value;
-  const phone = document.getElementById("custPhone").value;
-  const model = document.getElementById("phoneModel").value;
-  const issue = document.getElementById("repairIssue").value;
-  
-  const randomId = "REP-" + Math.floor(1000 + Math.random() * 9000);
-  const waMsg = encodeURIComponent(`*नया रिपेयर बुकिंग अनुरोध*\n\nID: ${randomId}\nनाम: ${name}\nफोन: ${phone}\nमॉडल: ${model}\nसमस्या: ${issue}`);
-  
-  alert(`बुकिंग सफल रही!\nआपका Repair ID है: ${randomId}\n\nअब ओके पर क्लिक करके इसे व्हाट्सएप पर भेजें।`);
-  window.open(`https://wa.me/919981176713?text=${waMsg}`, "_blank");
-  this.reset();
-});
+  let filtered = productsData.filter(product => {
+    const nameMatch = (product.name || "").toLowerCase().includes(searchTerm);
+    const brandMatchStr = (product.brand || "").toLowerCase().includes(searchTerm);
+    const ramMatch = (product.ram_storage || "").toLowerCase().includes(searchTerm);
+    const searchMatches = nameMatch || brandMatchStr || ramMatch;
 
-document.getElementById("trackBtn").addEventListener("click", function() {
-  const id = document.getElementById("trackIdInput").value.trim().toUpperCase();
-  const resultDiv = document.getElementById("trackResult");
-  resultDiv.classList.remove("hidden");
-  
-  if (repairDatabase[id]) {
-    const data = repairDatabase[id];
-    resultDiv.style.color = "var(--text)";
-    resultDiv.innerHTML = `मॉडल: ${data.model} | समस्या: ${data.issue}<br><span style="color:var(--success);">स्टेटस: ${data.status}</span><br>समय: ${data.time}`;
-  } else {
-    resultDiv.style.color = "var(--danger)";
-    resultDiv.innerHTML = `Repair ID "${id}" नहीं मिला। कृपया सही ID डालें या दुकान पर संपर्क करें।`;
+    const brandMatches = selectedBrand === "all" || (product.brand || "").toLowerCase() === selectedBrand.toLowerCase();
+    const networkMatches = selectedNetwork === "all" || (product.network || "").toUpperCase().includes(selectedNetwork.toUpperCase());
+
+    return searchMatches && brandMatches && networkMatches;
+  });
+
+  if (selectedSort === "low-high") {
+    filtered.sort((a, b) => a.price - b.price);
+  } else if (selectedSort === "high-low") {
+    filtered.sort((a, b) => b.price - a.price);
   }
-});
 
-function quickEnquire(topic) {
-  const msg = encodeURIComponent(`नमस्ते Kamal Mobile and Video Graphy, मुझे "${topic}" की जानकारी चाहिए।`);
-  window.open(`https://wa.me/919981176713?text=${msg}`, "_blank");
+  renderProducts(filtered);
 }
 
-document.getElementById("themeBtn").addEventListener("click", () => document.body.classList.toggle("dark"));
-document.getElementById("menuBtn").addEventListener("click", () => document.getElementById("mainNav").classList.toggle("open"));
-document.getElementById("year").textContent = new Date().getFullYear();
+// Event Listeners for Filters
+if (searchInput) searchInput.addEventListener("input", applyFilters);
+if (brandFilter) brandFilter.addEventListener("change", applyFilters);
+if (networkFilter) networkFilter.addEventListener("change", applyFilters);
+if (sortFilter) sortFilter.addEventListener("change", applyFilters);
 
-renderProducts();
+// Repair Booking Form Submission
+if (repairForm) {
+  repairForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById("custName").value.trim();
+    const phone = document.getElementById("custPhone").value.trim();
+    const model = document.getElementById("phoneModel").value.trim();
+    const issue = document.getElementById("repairIssue").value;
+    const time = document.getElementById("prefTime").value.trim() || "यथाशीघ्र";
+
+    const repairId = "REP-" + Math.floor(1000 + Math.random() * 9000);
+
+    const repairData = { id: repairId, name, phone, model, issue, status: "बुकिंग प्राप्त हुई (Under Process)", date: new Date().toLocaleDateString("hi-IN") };
+    localStorage.setItem(repairId, JSON.stringify(repairData));
+
+    const message = encodeURIComponent(`🛠️ *नया रिपेयर बुकिंग अनुरोध*\n\n*Repair ID:* ${repairId}\n*ग्राहक:* ${name}\n*फोन:* ${phone}\n*मॉडल:* ${model}\n*समस्या:* ${issue}\n*समय:* ${time}`);
+
+    alert(`बुकिंग सफल! आपका Repair ID है: ${repairId}\nइसे संभाल कर रखें।`);
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, "_blank");
+    repairForm.reset();
+  });
+}
+
+// Track Repair Status
+if (trackBtn) {
+  trackBtn.addEventListener("click", () => {
+    const id = trackIdInput.value.trim().toUpperCase();
+    if (!id) {
+      alert("कृपया Repair ID दर्ज करें।");
+      return;
+    }
+
+    const saved = localStorage.getItem(id);
+    trackResult.classList.remove("hidden");
+
+    if (saved) {
+      const data = JSON.parse(saved);
+      trackResult.innerHTML = `
+        <div style="background:#e8f5e9; padding:15px; border-radius:8px; border:1px solid #4caf50;">
+          <h4 style="color:#2e7d32; margin-bottom:5px;">रिपेयर स्टेटस: ${data.status}</h4>
+          <p><b>ID:</b> ${data.id} | <b>मॉडल:</b> ${data.model}</p>
+          <p><b>समस्या:</b> ${data.issue}</p>
+        </div>
+      `;
+    } else {
+      trackResult.innerHTML = `
+        <div style="background:#ffebee; padding:15px; border-radius:8px; border:1px solid #ef5350; color:#c62828;">
+          Repair ID "${id}" नहीं मिला। कृपया सही ID डालें या दुकान पर कॉल करें।
+        </div>
+      `;
+    }
+  });
+}
+
+// Navigation & Menu Helper
+function initNavigation() {
+  const menuBtn = document.getElementById("menuBtn");
+  const mainNav = document.getElementById("mainNav");
+
+  if (menuBtn && mainNav) {
+    menuBtn.addEventListener("click", () => {
+      mainNav.classList.toggle("active");
+    });
+  }
+   }
+                   

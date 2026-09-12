@@ -16,7 +16,6 @@
     button:disabled { background: #94a3b8; }
     .status { margin-top: 15px; text-align: center; font-weight: bold; }
   </style>
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 </head>
@@ -58,7 +57,6 @@
 </div>
 
 <script>
-  // Firebase Configuration
   const firebaseConfig = {
     apiKey: "AIzaSyAy1yB5KLjngy1sSMA5Aunup9Tvyengalg",
     authDomain: "kamal-mobile-d8ba5.firebaseapp.com",
@@ -75,9 +73,6 @@
   const submitBtn = document.getElementById('submitBtn');
   const statusMsg = document.getElementById('statusMsg');
 
-  // ImgBB API Key for free image hosting
-  const IMGBB_API_KEY = "c1869e5d4a460912f27576f3ee824c0d"; 
-
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     submitBtn.disabled = true;
@@ -88,23 +83,11 @@
     const file = fileInput.files[0];
 
     try {
-      // Upload image to ImgBB
-      const formData = new FormData();
-      formData.append('image', file);
-
-      const imgRes = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-        method: 'POST',
-        body: formData
-      });
-      const imgData = await imgRes.json();
-
-      if (!imgData.success) throw new Error("इमेज अपलोड विफल रहा।");
-
-      const imageUrl = imgData.data.url;
+      // Direct Base64 conversion for small product images
+      const imageUrl = await convertToBase64(file);
 
       statusMsg.textContent = "डेटाबेस में सेव हो रहा है...";
 
-      // Save to Firestore
       await db.collection("mobiles").add({
         name: document.getElementById('pName').value.trim(),
         brand: document.getElementById('pBrand').value.trim(),
@@ -116,7 +99,7 @@
       });
 
       statusMsg.style.color = "#16a34a";
-      statusMsg.textContent = "✅ मोबाइल सफलतापूर्वक जुड़ गया!";
+      statusMsg.textContent = "✅ नया मोबाइल सफलतापूर्वक जुड़ गया!";
       form.reset();
     } catch (err) {
       console.error(err);
@@ -126,6 +109,15 @@
       submitBtn.disabled = false;
     }
   });
+
+  function convertToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
 </script>
 </body>
 </html>

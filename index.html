@@ -1,0 +1,215 @@
+ <!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kamal Mobile - मेन रोड दुल्लापुर बाजार</title>
+  <meta name="description" content="Kamal Mobile - मेन रोड दुल्लापुर बाजार। नया मोबाइल, रिपेयरिंग, पैसे निकालना/भेजना, किश्त जमा, नया सिम और मोबाइल एक्सेसरीज।">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="container nav-wrap">
+      <a href="#home" class="logo"><span>के.एम</span> Kamal Mobile</a>
+      <button class="menu-btn" id="menuBtn">☰</button>
+      <nav id="mainNav">
+        <a href="#home">होम</a>
+        <a href="#catalog">📱 मोबाइल कैटलॉग</a>
+        <a href="#services">💼 अन्य सेवाएं</a>
+        <a href="#repair-section">🛠️ रिपेयरिंग बुकिंग</a>
+        <a href="#track-section">🔍 स्टेटस ट्रैक करें</a>
+        <a href="#contact">📍 संपर्क करें</a>
+        <button class="theme-btn" id="themeBtn">◐</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">मेन रोड, दुल्लापुर बाजार • आपकी अपनी दुकान</span>
+          <h1>नया स्मार्टफोन खरीदें <span>सर्वश्रेष्ठ दामों में!</span></h1>
+          <p>Vivo, Samsung, Realme, Redmi के नए मोबाइल उपलब्ध। 0% ब्याज पर आसान किश्त (EMI), पुराना फोन एक्सचेंज और 100% गारंटीड रिपेयरिंग।</p>
+          <div class="hero-actions">
+            <!-- आपकी असली Google Maps लोकेशन लिंक -->
+            <a href="https://maps.app.goo.gl/9aAmNUfEGnKDcEr87" class="btn primary" target="_blank">📍 दुकान का रास्ता देखें (Google Maps)</a>
+            <a href="tel:9981176713" class="btn secondary">📞 Direct Call करें</a>
+          </div>
+        </div>
+        <div class="hero-card offer-card">
+          <span class="badge">स्पेशल सुविधा</span>
+          <h3>दुकान पर उपलब्ध सेवाएं</h3>
+          <p>आधार से पैसे निकालें, किसी भी बैंक की किश्त (EMI) जमा करें और नया सिम तुरंत चालू कराएं।</p>
+          <button onclick="quickEnquire('All Services Inquiry')" class="btn primary small-btn">WhatsApp पर जानकारी लें</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIORITY 1: MOBILE PRODUCT CATALOG -->
+    <section class="section" id="catalog">
+      <div class="container">
+        <div class="section-head product-head">
+          <div>
+            <span class="eyebrow">उपलब्ध फोन</span>
+            <h2>📱 नया स्मार्टफोन कैटलॉग</h2>
+          </div>
+          <input id="searchInput" class="search" type="search" placeholder="ब्रांड, मॉडल या RAM से खोजें...">
+        </div>
+
+        <div class="filter-wrapper">
+          <div class="filters-group">
+            <select id="brandFilter" class="select-filter">
+              <option value="all">सभी ब्रांड (Brands)</option>
+              <option value="Vivo">Vivo</option>
+              <option value="Samsung">Samsung</option>
+              <option value="Redmi">Redmi</option>
+              <option value="OnePlus">OnePlus</option>
+              <option value="Realme">Realme</option>
+            </select>
+            <select id="networkFilter" class="select-filter">
+              <option value="all">नेटवर्क (4G/5G)</option>
+              <option value="5G">5G</option>
+              <option value="4G">4G</option>
+            </select>
+            <select id="sortFilter" class="select-filter">
+              <option value="default">कीमत: सामान्य</option>
+              <option value="low-high">कीमत: कम से ज्यादा</option>
+              <option value="high-low">कीमत: ज्यादा से कम</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="productGrid" class="product-grid"></div>
+        <div id="emptyState" class="empty hidden">कोई प्रोडक्ट नहीं मिला। दुकान पर कॉल करके पूछें!</div>
+      </div>
+    </section>
+
+    <!-- PRIORITY 2: OTHER SERVICES WE OFFER -->
+    <section class="section repair-bg" id="services">
+      <div class="container">
+        <div class="section-head">
+          <div><span class="eyebrow">दुकान की सुविधाएं</span><h2>💼 हम और क्या-क्या काम करते हैं?</h2></div>
+        </div>
+        <div class="product-grid">
+          <div class="product-card">
+            <div class="product-icon">📲</div>
+            <h3>नया सिम & पोर्ट (MNP)</h3>
+            <p class="ram-spec">Jio, Airtel, Vi का नया सिम तुरंत चालू कराएं या अपना पुराना नंबर पोर्ट कराएं।</p>
+            <button onclick="quickEnquire('New SIM / Port')" class="btn secondary full-width">WhatsApp पर पूछें</button>
+          </div>
+          <div class="product-card">
+            <div class="product-icon">💸</div>
+            <h3>पैसे निकालना & ट्रांसफ़र</h3>
+            <p class="ram-spec">आधार कार्ड से पैसे निकालें (AEPS), बैंक खाते में पैसे भेजें और मिनी स्टेटमेंट लें।</p>
+            <button onclick="quickEnquire('Money Transfer / Cash Out')" class="btn secondary full-width">WhatsApp पर पूछें</button>
+          </div>
+          <div class="product-card">
+            <div class="product-icon">📄</div>
+            <h3>किश्त (EMI) जमा करें</h3>
+            <p class="ram-spec">Bajaj, TVS, Home Credit, Samsung Finance की किश्त समय पर दुकान पर जमा करें।</p>
+            <button onclick="quickEnquire('EMI Payment')" class="btn secondary full-width">WhatsApp पर पूछें</button>
+          </div>
+          <div class="product-card">
+            <div class="product-icon">⌚</div>
+            <h3>स्मार्टवॉच & घड़ियां</h3>
+            <p class="ram-spec">फैंसी हाथ घड़ियां, ब्लूटूथ स्मार्टवॉच और उनके पट्टे/सेल उपलब्ध।</p>
+            <button onclick="quickEnquire('Watch Collection')" class="btn secondary full-width">WhatsApp पर पूछें</button>
+          </div>
+          <div class="product-card">
+            <div class="product-icon">🎧</div>
+            <h3>कवर, ग्लास & एक्सेसरीज</h3>
+            <p class="ram-spec">11D टेम्पर्ड ग्लास, बैक कवर, चार्जर, इयरफोन, नेकबैंड और मेमोरी कार्ड।</p>
+            <button onclick="quickEnquire('Mobile Accessories')" class="btn secondary full-width">WhatsApp पर पूछें</button>
+          </div>
+          <div class="product-card">
+            <div class="product-icon">🛠️</div>
+            <h3>मोबाइल रिपेयरिंग</h3>
+            <p class="ram-spec">फूटी स्क्रीन/डिस्प्ले, बैटरी बदलना, चार्जिंग पिन और सॉफ्टवेयर का काम।</p>
+            <a href="#repair-section" class="btn primary full-width">रिपेयर बुक करें</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIORITY 3: REPAIR BOOKING FORM -->
+    <section class="section" id="repair-section">
+      <div class="container repair-container">
+        <div class="repair-info">
+          <span class="eyebrow">फास्ट रिपेयरिंग</span>
+          <h2>🛠️ मोबाइल रिपेयर बुकिंग</h2>
+          <p>घर बैठे रिपेयरिंग स्लॉट बुक करें। हम आपको तुरंत कंफर्मेशन देंगे।</p>
+          <ul class="bullet-list">
+            <li>✓ 100% ओरिजिनल पार्ट्स</li>
+            <li>✓ तुरंत रिपेयरिंग सुविधा</li>
+            <li>✓ रिपेयरिंग पर वारंटी</li>
+          </ul>
+        </div>
+        <div class="form-card">
+          <h3>रिपेयरिंग फॉर्म</h3>
+          <form id="repairForm">
+            <input type="text" id="custName" placeholder="आपका नाम *" required>
+            <input type="tel" id="custPhone" placeholder="मोबाइल नंबर *" pattern="[0-9]{10}" required>
+            <input type="text" id="phoneModel" placeholder="मोबाइल का मॉडल (जैसे: Vivo Y20) *" required>
+            <select id="repairIssue" required>
+              <option value="">समस्या चुनें *</option>
+              <option value="Screen Replacement">फूटी स्क्रीन / टच खराब</option>
+              <option value="Battery Problem">बैटरी जल्दी खत्म होना / फूलना</option>
+              <option value="Charging Issue">चार्जिंग पिन / स्लो चार्जिंग</option>
+              <option value="Water Damage">पानी में गिरा फोन</option>
+              <option value="Speaker/Mic">आवाज नहीं आना / स्पीकर खराब</option>
+              <option value="Other">अन्य समस्या</option>
+            </select>
+            <input type="text" id="prefTime" placeholder="पसंदीदा समय (उदा: शाम 4 बजे)">
+            <button type="submit" class="btn primary full-width">बुकिंग कंफर्म करें & Repair ID लें</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRIORITY 4: STATUS TRACKING -->
+    <section class="section repair-bg" id="track-section">
+      <div class="container track-box">
+        <span class="eyebrow">ऑनलाइन ट्रैकर</span>
+        <h2>🔍 अपने रिपेयर का स्टेटस जांचें</h2>
+        <p>बुकिंग के बाद मिला हुआ Repair ID (जैसे: REP-1001) दर्ज करें:</p>
+        <div class="track-input-group">
+          <input type="text" id="trackIdInput" placeholder="Repair ID डालें (उदा: REP-1001)">
+          <button id="trackBtn" class="btn primary">स्टेटस देखें</button>
+        </div>
+        <div id="trackResult" class="track-result hidden"></div>
+      </div>
+    </section>
+
+    <!-- PRIORITY 5: LOCATION & CONTACT -->
+    <section class="section contact" id="contact">
+      <div class="container contact-grid">
+        <div>
+          <span class="eyebrow">संपर्क और लोकेशन</span>
+          <h2>Kamal Mobile</h2>
+          <div class="contact-list">
+            <div><span>📞</span><div><b>डायरेक्ट कॉल करें:</b> <a href="tel:9981176713" style="font-weight:bold;">9981176713</a></div></div>
+            <div><span>💬</span><div><b>WhatsApp:</b> <a href="https://wa.me/919981176713" target="_blank" style="color:#25d366; font-weight:bold;">9981176713 पर मैसेज करें</a></div></div>
+            <div><span>📍</span><div><b>दुकान का पता:</b> मेन रोड, दुल्लापुर बाजार</div></div>
+            <div><span>🗺️</span><div><b>Google Maps:</b> <a href="https://maps.app.goo.gl/9aAmNUfEGnKDcEr87" target="_blank" style="color:var(--accent); font-weight:bold;">नेविगेशन चालू करें</a></div></div>
+            <div><span>🕒</span><div><b>समय:</b> सुबह 9:00 बजे से रात 8:00 बजे तक</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container nav-wrap" style="justify-content: space-between;">
+      <p><b>Kamal Mobile</b> — मेन रोड, दुल्लापुर बाजार</p>
+      <p>© <span id="year"></span> सर्वाधिकार सुरक्षित।</p>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/919981176713?text=नमस्ते%20Kamal%20Mobile,%20मुझे%20जानकारी%20चाहिए।" class="whatsapp-float" target="_blank" aria-label="WhatsApp">💬</a>
+
+  <script src="script.js"></script>
+</body>
+</html>

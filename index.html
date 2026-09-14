@@ -4,14 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kamal Mobile & Video Graphy - मेन रोड दुल्लापुर बाजार</title>
-  <meta name="description" content="Kamal Mobile - मेन रोड दुल्लापुर बाजार। नया मोबाइल, रिपेयरिंग, पैसे निकालना/भेजना, किश्त जमा, नया सिम और मोबाइल एक्सेसरीज।">
+  <meta name="description" content="Kamal Mobile & Video Graphy - मेन रोड दुल्लापुर बाजार। नया मोबाइल, रिपेयरिंग, पैसे निकालना/भेजना, किश्त जमा, नया सिम और मोबाइल एक्सेसरीज।">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:image" content="https://kamal-mobile.vercel.app/og-image.png">
+  <meta property="og:url" content="https://kamal-mobile.vercel.app/">
+  <meta property="og:title" content="Kamal Mobile & Video Graphy - मेन रोड दुल्लापुर बाजार">
+  <meta property="og:description" content="नया मोबाइल, रिपेयरिंग, पैसे निकालना/भेजना, किश्त जमा, नया सिम और मोबाइल एक्सेसरीज।">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="hi_IN">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MobilePhoneStore",
+    "name": "Kamal Mobile & Video Graphy",
+    "telephone": "+919981176713",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "मेन रोड, दुल्लापुर बाजार",
+      "addressCountry": "IN"
+    },
+    "openingHours": "Mo-Su 09:00-20:00"
+  }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <header class="header">
     <div class="container nav-wrap">
-      <a href="#home" class="logo"><span>के.एम</span> Kamal Mobile & Video Graphy </a>
+      <a href="#home" class="logo"><span>के.एम</span> Kamal Mobile & Video Graphy</a>
       <button class="menu-btn" id="menuBtn">☰</button>
       <nav id="mainNav">
         <a href="#home">होम</a>
@@ -32,11 +57,15 @@
         <div>
           <span class="eyebrow">मेन रोड, दुल्लापुर बाजार • आपकी अपनी दुकान</span>
           <h1>नया स्मार्टफोन खरीदें <span>सर्वश्रेष्ठ दामों में!</span></h1>
-          <p>Vivo, Samsung, Realme, Redmi के नए मोबाइल उपलब्ध। 0% ब्याज पर आसान किश्त (EMI), पुराना फोन एक्सचेंज और 100% गारंटीड रिपेयरिंग।</p>
+          <p>सभी कंपनियों के नए स्मार्टफोन उपलब्ध — Vivo, Samsung, Realme, Redmi, Apple और अन्य। साथ ही सॉफ्टवेयर और हार्डवेयर दोनों तरह की मोबाइल रिपेयरिंग। 0% ब्याज पर आसान किश्त (EMI), पुराना फोन एक्सचेंज।</p>
           <div class="hero-actions">
-            <!-- आपकी असली Google Maps लोकेशन लिंक -->
             <a href="https://maps.app.goo.gl/9aAmNUfEGnKDcEr87" class="btn primary" target="_blank">📍 दुकान का रास्ता देखें (Google Maps)</a>
             <a href="tel:9981176713" class="btn secondary">📞 Direct Call करें</a>
+          </div>
+          <div class="hero-stats">
+            <div>सभी कंपनियों के मोबाइल</div>
+            <div>सॉफ्टवेयर + हार्डवेयर रिपेयर</div>
+            <div>तुरंत रिपेयरिंग सुविधा</div>
           </div>
         </div>
         <div class="hero-card offer-card">
@@ -44,6 +73,18 @@
           <h3>दुकान पर उपलब्ध सेवाएं</h3>
           <p>आधार से पैसे निकालें, किसी भी बैंक की किश्त (EMI) जमा करें और नया सिम तुरंत चालू कराएं।</p>
           <button onclick="quickEnquire('All Services Inquiry')" class="btn primary small-btn">WhatsApp पर जानकारी लें</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE OFFERS (owner admin panel से आता है) -->
+    <section class="section" id="offers-section" style="padding-top:0;">
+      <div class="container">
+        <div class="section-head">
+          <div><span class="eyebrow">इस हफ्ते के ऑफर</span><h2>🔥 चालू ऑफर्स</h2></div>
+        </div>
+        <div id="offersStrip" class="offers-strip">
+          <p class="offers-empty">लोड हो रहा है...</p>
         </div>
       </div>
     </section>
@@ -63,11 +104,6 @@
           <div class="filters-group">
             <select id="brandFilter" class="select-filter">
               <option value="all">सभी ब्रांड (Brands)</option>
-              <option value="Vivo">Vivo</option>
-              <option value="Samsung">Samsung</option>
-              <option value="Redmi">Redmi</option>
-              <option value="OnePlus">OnePlus</option>
-              <option value="Realme">Realme</option>
             </select>
             <select id="networkFilter" class="select-filter">
               <option value="all">नेटवर्क (4G/5G)</option>
@@ -84,6 +120,7 @@
 
         <div id="productGrid" class="product-grid"></div>
         <div id="emptyState" class="empty hidden">कोई प्रोडक्ट नहीं मिला। दुकान पर कॉल करके पूछें!</div>
+        <p style="font-size:12px; color:var(--muted); margin-top:10px;">फोटो पर क्लिक करके सभी तस्वीरें देखें</p>
       </div>
     </section>
 
@@ -93,43 +130,8 @@
         <div class="section-head">
           <div><span class="eyebrow">दुकान की सुविधाएं</span><h2>💼 हम और क्या-क्या काम करते हैं?</h2></div>
         </div>
-        <div class="product-grid">
-          <div class="product-card">
-            <div class="product-icon">📲</div>
-            <h3>नया सिम & पोर्ट (MNP)</h3>
-            <p class="ram-spec">Jio, Airtel, Vi का नया सिम तुरंत चालू कराएं या अपना पुराना नंबर पोर्ट कराएं।</p>
-            <button onclick="quickEnquire('New SIM / Port')" class="btn secondary full-width">WhatsApp पर पूछें</button>
-          </div>
-          <div class="product-card">
-            <div class="product-icon">💸</div>
-            <h3>पैसे निकालना & ट्रांसफ़र</h3>
-            <p class="ram-spec">आधार कार्ड से पैसे निकालें (AEPS), बैंक खाते में पैसे भेजें और मिनी स्टेटमेंट लें।</p>
-            <button onclick="quickEnquire('Money Transfer / Cash Out')" class="btn secondary full-width">WhatsApp पर पूछें</button>
-          </div>
-          <div class="product-card">
-            <div class="product-icon">📄</div>
-            <h3>किश्त (EMI) जमा करें</h3>
-            <p class="ram-spec">Bajaj, TVS, Home Credit, Samsung Finance की किश्त समय पर दुकान पर जमा करें।</p>
-            <button onclick="quickEnquire('EMI Payment')" class="btn secondary full-width">WhatsApp पर पूछें</button>
-          </div>
-          <div class="product-card">
-            <div class="product-icon">⌚</div>
-            <h3>स्मार्टवॉच & घड़ियां</h3>
-            <p class="ram-spec">फैंसी हाथ घड़ियां, ब्लूटूथ स्मार्टवॉच और उनके पट्टे/सेल उपलब्ध।</p>
-            <button onclick="quickEnquire('Watch Collection')" class="btn secondary full-width">WhatsApp पर पूछें</button>
-          </div>
-          <div class="product-card">
-            <div class="product-icon">🎧</div>
-            <h3>कवर, ग्लास & एक्सेसरीज</h3>
-            <p class="ram-spec">11D टेम्पर्ड ग्लास, बैक कवर, चार्जर, इयरफोन, नेकबैंड और मेमोरी कार्ड।</p>
-            <button onclick="quickEnquire('Mobile Accessories')" class="btn secondary full-width">WhatsApp पर पूछें</button>
-          </div>
-          <div class="product-card">
-            <div class="product-icon">🛠️</div>
-            <h3>मोबाइल रिपेयरिंग</h3>
-            <p class="ram-spec">फूटी स्क्रीन/डिस्प्ले, बैटरी बदलना, चार्जिंग पिन और सॉफ्टवेयर का काम।</p>
-            <a href="#repair-section" class="btn primary full-width">रिपेयर बुक करें</a>
-          </div>
+        <div id="servicesGrid" class="product-grid">
+          <p class="offers-empty">लोड हो रहा है...</p>
         </div>
       </div>
     </section>
@@ -146,6 +148,16 @@
             <li>✓ तुरंत रिपेयरिंग सुविधा</li>
             <li>✓ रिपेयरिंग पर वारंटी</li>
           </ul>
+          <div style="margin-top:20px; font-size:13px; color:var(--muted);">
+            <b>अनुमानित रिपेयर फीस:</b>
+            <div>फूटी स्क्रीन / टच: <span id="fee-screen_replacement">...</span></div>
+            <div>बैटरी: <span id="fee-battery_problem">...</span></div>
+            <div>चार्जिंग: <span id="fee-charging_issue">...</span></div>
+            <div>पानी से खराब: <span id="fee-water_damage">...</span></div>
+            <div>स्पीकर/माइक: <span id="fee-speaker_mic">...</span></div>
+            <div>सॉफ्टवेयर प्रॉब्लम: <span id="fee-software_issue">...</span></div>
+            <div>लॉक/पैटर्न खुलवाना: <span id="fee-lock_unlock">...</span></div>
+          </div>
         </div>
         <div class="form-card">
           <h3>रिपेयरिंग फॉर्म</h3>
@@ -160,6 +172,8 @@
               <option value="Charging Issue">चार्जिंग पिन / स्लो चार्जिंग</option>
               <option value="Water Damage">पानी में गिरा फोन</option>
               <option value="Speaker/Mic">आवाज नहीं आना / स्पीकर खराब</option>
+              <option value="Software Issue">सॉफ्टवेयर प्रॉब्लम (हैंग, फॉर्मेट, पासवर्ड/पैटर्न भूलना)</option>
+              <option value="Lock/Pattern Unlock">मोबाइल लॉक/पासवर्ड/पैटर्न खुलवाना</option>
               <option value="Other">अन्य समस्या</option>
             </select>
             <input type="text" id="prefTime" placeholder="पसंदीदा समय (उदा: शाम 4 बजे)">
@@ -183,12 +197,25 @@
       </div>
     </section>
 
+    <!-- CUSTOMER REVIEWS -->
+    <section class="section" id="reviews-section">
+      <div class="container">
+        <div class="section-head">
+          <div><span class="eyebrow">ग्राहकों की राय</span><h2>⭐ ग्राहक क्या कहते हैं</h2></div>
+        </div>
+        <div id="reviewsAvg" style="margin-bottom:16px;"></div>
+        <div id="reviewsList" class="offers-strip">
+          <p class="offers-empty">लोड हो रहा है...</p>
+        </div>
+      </div>
+    </section>
+
     <!-- PRIORITY 5: LOCATION & CONTACT -->
     <section class="section contact" id="contact">
       <div class="container contact-grid">
         <div>
           <span class="eyebrow">संपर्क और लोकेशन</span>
-          <h2>Kamal Mobile</h2>
+          <h2>Kamal Mobile & Video Graphy</h2>
           <div class="contact-list">
             <div><span>📞</span><div><b>डायरेक्ट कॉल करें:</b> <a href="tel:9981176713" style="font-weight:bold;">9981176713</a></div></div>
             <div><span>💬</span><div><b>WhatsApp:</b> <a href="https://wa.me/919981176713" target="_blank" style="color:#25d366; font-weight:bold;">9981176713 पर मैसेज करें</a></div></div>
@@ -202,16 +229,47 @@
   </main>
 
   <footer>
-    <div class="container nav-wrap" style="justify-content: space-between;">
-      <p><b>Kamal Mobile</b> — मेन रोड, दुल्लापुर बाजार</p>
-      <p>© <span id="year"></span> सर्वाधिकार सुरक्षित।</p>
+    <div class="container footer-grid">
+      <div>
+        <div class="logo" style="margin-bottom:10px;"><span>के.एम</span> Kamal Mobile & Video Graphy</div>
+        <p style="font-size:13px; color:var(--muted); max-width:280px;">मेन रोड, दुल्लापुर बाजार में आपकी भरोसेमंद मोबाइल शॉप — नए फोन, रिपेयरिंग और डिजिटल सेवाएं, एक ही जगह।</p>
+      </div>
+      <div>
+        <h4 class="footer-heading">क्विक लिंक</h4>
+        <a href="#catalog">मोबाइल कैटलॉग</a>
+        <a href="#services">अन्य सेवाएं</a>
+        <a href="#repair-section">रिपेयर बुकिंग</a>
+        <a href="#track-section">स्टेटस ट्रैक करें</a>
+      </div>
+      <div>
+        <h4 class="footer-heading">संपर्क</h4>
+        <a href="tel:9981176713">📞 9981176713</a>
+        <a href="https://wa.me/919981176713" target="_blank">💬 WhatsApp</a>
+        <a href="https://maps.app.goo.gl/9aAmNUfEGnKDcEr87" target="_blank">📍 Google Maps</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>© <span id="year"></span> Kamal Mobile & Video Graphy — सर्वाधिकार सुरक्षित।</p>
+      <a href="admin.html" style="opacity:.55; font-size:12px;">Owner Login</a>
     </div>
   </footer>
 
   <a href="https://wa.me/919981176713?text=नमस्ते%20Kamal%20Mobile,%20मुझे%20जानकारी%20चाहिए।" class="whatsapp-float" target="_blank" aria-label="WhatsApp">💬</a>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
- 
-  <script src="script.js"></script>
+
+  <!-- फोटो गैलरी मॉडल -->
+  <div id="galleryOverlay" class="modal-overlay hidden">
+    <div class="gallery-modal">
+      <button class="close-btn" id="galleryClose">×</button>
+      <h3 id="galleryTitle"></h3>
+      <div class="gallery-main-wrap">
+        <img id="galleryMainImg" class="gallery-main-img" src="" alt="">
+        <button class="gallery-arrow prev" id="galleryPrev">‹</button>
+        <button class="gallery-arrow next" id="galleryNext">›</button>
+      </div>
+      <div class="gallery-thumbs" id="galleryThumbs"></div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
 </body>
 </html>

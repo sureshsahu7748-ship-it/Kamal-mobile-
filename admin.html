@@ -3,142 +3,230 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kamal Mobile - Admin Panel</title>
-  <style>
-    * { box-sizing: border-box; font-family: sans-serif; margin: 0; padding: 0; }
-    body { background: #f4f6f9; padding: 20px; }
-    .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    h2 { color: #1e293b; margin-bottom: 20px; text-align: center; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; font-weight: bold; margin-bottom: 5px; color: #475569; }
-    input, select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 16px; }
-    button { width: 100%; padding: 12px; background: #2563eb; color: #fff; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; }
-    button:disabled { background: #94a3b8; }
-    .status { margin-top: 15px; text-align: center; font-weight: bold; }
-  </style>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Kamal Mobile & Video Graphy - Owner Admin Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
-  <h2>📱 कमल मोबाइल - नया फोन जोड़ें</h2>
-  <form id="addProductForm">
-    <div class="form-group">
-      <label>मोबाइल का नाम (Name)</label>
-      <input type="text" id="pName" placeholder="उदा: Vivo Y20" required>
+  <!-- ================= LOGIN SCREEN ================= -->
+  <div id="loginScreen" class="container">
+    <div class="login-box">
+      <h2>🔒 Owner Login</h2>
+      <p>यह पेज सिर्फ दुकान के मालिक के लिए है।</p>
+      <form id="loginForm" class="admin-form">
+        <label>Email</label>
+        <input type="email" id="loginEmail" required placeholder="owner@example.com">
+        <label>Password</label>
+        <input type="password" id="loginPassword" required placeholder="••••••••">
+        <button type="submit" class="btn primary full-width">Login करें</button>
+      </form>
+      <p id="loginError" style="color:var(--danger); font-size:13px; margin-top:10px;"></p>
+      <p style="margin-top:16px;"><a href="index.html" style="color:var(--muted); font-size:13px;">← वेबसाइट पर वापस जाएं</a></p>
     </div>
-    <div class="form-group">
-      <label>ब्रांड (Brand)</label>
-      <input type="text" id="pBrand" placeholder="उदा: Vivo" required>
+  </div>
+
+  <!-- ================= ADMIN PANEL (login के बाद दिखेगा) ================= -->
+  <div id="adminScreen" class="container hidden">
+    <div class="admin-header">
+      <div>
+        <b>Kamal Mobile & Video Graphy — Admin Panel</b>
+        <div style="font-size:12px; color:var(--muted);" id="loggedInAs"></div>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <a href="index.html" class="btn secondary">वेबसाइट देखें</a>
+        <button id="backupBtn" class="btn secondary">📥 बैकअप डाउनलोड</button>
+        <button id="logoutBtn" class="btn danger">Logout</button>
+      </div>
     </div>
-    <div class="form-group">
-      <label>कीमत (Price in ₹)</label>
-      <input type="number" id="pPrice" placeholder="उदा: 11999" required>
+
+    <div class="admin-tabs">
+      <button class="admin-tab-btn active" data-tab="tab-products">📱 मोबाइल प्रोडक्ट्स</button>
+      <button class="admin-tab-btn" data-tab="tab-services">🧰 सेवाएं</button>
+      <button class="admin-tab-btn" data-tab="tab-offers">🔥 ऑफर्स</button>
+      <button class="admin-tab-btn" data-tab="tab-fees">🛠️ रिपेयर फीस</button>
+      <button class="admin-tab-btn" data-tab="tab-reviews">⭐ ग्राहक रिव्यू</button>
+      <button class="admin-tab-btn" data-tab="tab-bookings">📋 रिपेयर बुकिंग्स</button>
     </div>
-    <div class="form-group">
-      <label>RAM / Storage</label>
-      <input type="text" id="pRam" placeholder="उदा: 4GB / 64GB">
+
+    <!-- ============ TAB: PRODUCTS ============ -->
+    <div id="tab-products" class="admin-panel-section active">
+      <div class="admin-card">
+        <h3 id="productFormTitle">नया मोबाइल जोड़ें</h3>
+        <form id="productForm" class="admin-form">
+          <input type="hidden" id="productEditId">
+          <div class="admin-grid-2">
+            <div><label>मोबाइल का नाम *</label><input type="text" id="pName" required placeholder="जैसे: Vivo Y200"></div>
+            <div><label>ब्रांड *</label><input type="text" id="pBrand" required placeholder="जैसे: Vivo" list="brandList">
+              <datalist id="brandList"><option value="Vivo"><option value="Samsung"><option value="Redmi"><option value="OnePlus"><option value="Realme"><option value="Apple"><option value="Oppo"><option value="Poco"><option value="Infinix"><option value="Motorola"><option value="Nokia"><option value="Lava"><option value="itel"></datalist>
+            </div>
+          </div>
+          <div class="admin-grid-2">
+            <div><label>नेटवर्क</label><select id="pNetwork"><option value="5G">5G</option><option value="4G">4G</option></select></div>
+            <div><label>RAM / Storage</label><input type="text" id="pRam" placeholder="जैसे: 8GB RAM / 128GB"></div>
+          </div>
+          <div class="admin-grid-2">
+            <div><label>कीमत (₹) *</label><input type="number" id="pPrice" required min="0" placeholder="जैसे: 17999"></div>
+            <div><label>स्टॉक स्टेटस</label><select id="pStatus"><option value="in">उपलब्ध है</option><option value="out">Out of Stock</option></select></div>
+          </div>
+          <div>
+            <label>मौजूदा फोटो</label>
+            <div id="existingImages" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;"></div>
+          </div>
+          <div>
+            <label>नई फोटो जोड़ें (एक साथ कई फोटो चुन सकते हैं)</label>
+            <input type="file" id="pImages" accept="image/*" multiple>
+          </div>
+          <div style="display:flex; gap:10px; margin-top:14px;">
+            <button type="submit" class="btn primary" id="productSubmitBtn">प्रोडक्ट जोड़ें</button>
+            <button type="button" class="btn secondary hidden" id="productCancelEdit">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="admin-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <h3 style="margin:0;">सभी प्रोडक्ट्स</h3>
+          <button id="seedSampleBtn" class="btn secondary small-btn">नमूना प्रोडक्ट्स जोड़ें</button>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>फोटो</th><th>नाम</th><th>ब्रांड</th><th>कीमत</th><th>स्टेटस</th><th>Action</th></tr></thead>
+            <tbody id="productsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label>नेटवर्क (Network)</label>
-      <select id="pNetwork">
-        <option value="4G">4G</option>
-        <option value="5G FAST">5G FAST</option>
-      </select>
+
+    <!-- ============ TAB: SERVICES ============ -->
+    <div id="tab-services" class="admin-panel-section">
+      <div class="admin-card">
+        <h3 id="serviceFormTitle">नई सेवा जोड़ें</h3>
+        <form id="serviceForm" class="admin-form">
+          <input type="hidden" id="serviceEditId">
+          <div class="admin-grid-2">
+            <div><label>Icon (कोई इमोजी चुनें) *</label><input type="text" id="serviceIcon" required placeholder="जैसे: 💸" maxlength="4"></div>
+            <div><label>क्रम संख्या (Order)</label><input type="number" id="serviceOrder" placeholder="जैसे: 1, 2, 3..."></div>
+          </div>
+          <label>सेवा का नाम *</label>
+          <input type="text" id="serviceTitle" required placeholder="जैसे: पैसे निकालना & ट्रांसफ़र">
+          <label>विवरण</label>
+          <textarea id="serviceDesc" rows="2" placeholder="जैसे: आधार कार्ड से पैसे निकालें, बैंक खाते में पैसे भेजें।"></textarea>
+          <div style="display:flex; gap:10px;">
+            <button type="submit" class="btn primary" id="serviceSubmitBtn">सेवा जोड़ें</button>
+            <button type="button" class="btn secondary hidden" id="serviceCancelEdit">Cancel</button>
+          </div>
+        </form>
+      </div>
+      <div class="admin-card">
+        <h3>सभी सेवाएं</h3>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>Icon</th><th>नाम</th><th>विवरण</th><th>क्रम</th><th>Action</th></tr></thead>
+            <tbody id="servicesTableBody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label>फोन की फोटो चुनें (Gallery Image)</label>
-      <input type="file" id="pImage" accept="image/*" required>
+
+    <!-- ============ TAB: OFFERS ============ -->
+    <div id="tab-offers" class="admin-panel-section">
+      <div class="admin-card">
+        <h3 id="offerFormTitle">नया ऑफर जोड़ें</h3>
+        <form id="offerForm" class="admin-form">
+          <input type="hidden" id="offerEditId">
+          <label>ऑफर का शीर्षक *</label>
+          <input type="text" id="offerTitle" required placeholder="जैसे: दिवाली धमाका ऑफर">
+          <label>विवरण</label>
+          <textarea id="offerDesc" rows="2" placeholder="जैसे: सभी मोबाइल पर ₹500 तक की छूट"></textarea>
+          <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+            <input type="checkbox" id="offerActive" checked style="width:auto; margin:0;"> यह ऑफर वेबसाइट पर दिखाएं
+          </label>
+          <div style="display:flex; gap:10px;">
+            <button type="submit" class="btn primary" id="offerSubmitBtn">ऑफर जोड़ें</button>
+            <button type="button" class="btn secondary hidden" id="offerCancelEdit">Cancel</button>
+          </div>
+        </form>
+      </div>
+      <div class="admin-card">
+        <h3>सभी ऑफर्स</h3>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>शीर्षक</th><th>विवरण</th><th>दिख रहा है?</th><th>Action</th></tr></thead>
+            <tbody id="offersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <button type="submit" id="submitBtn">मोबाइल अपलोड करें</button>
-  </form>
-  <div class="status" id="statusMsg"></div>
-</div>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAy1yB5KLjngy1sSMA5Aunup9Tvyengalg",
-    authDomain: "kamal-mobile-d8ba5.firebaseapp.com",
-    projectId: "kamal-mobile-d8ba5",
-    storageBucket: "kamal-mobile-d8ba5.firebasestorage.app",
-    messagingSenderId: "1065271731721",
-    appId: "1:1065271731721:web:f4163ef79q1409d50cb2d8"
-  };
+    <!-- ============ TAB: REPAIR FEES ============ -->
+    <div id="tab-fees" class="admin-panel-section">
+      <div class="admin-card">
+        <h3>रिपेयर की अनुमानित फीस (ग्राहकों को वेबसाइट पर दिखेगी)</h3>
+        <form id="feesForm" class="admin-form">
+          <div id="feesFormFields"></div>
+          <button type="submit" class="btn primary">फीस सेव करें</button>
+        </form>
+      </div>
+    </div>
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+    <!-- ============ TAB: REVIEWS ============ -->
+    <div id="tab-reviews" class="admin-panel-section">
+      <div class="admin-card">
+        <h3 id="reviewFormTitle">नया रिव्यू जोड़ें</h3>
+        <form id="reviewForm" class="admin-form">
+          <input type="hidden" id="reviewEditId">
+          <div class="admin-grid-2">
+            <div><label>ग्राहक का नाम *</label><input type="text" id="reviewName" required placeholder="जैसे: राम कुमार"></div>
+            <div><label>रेटिंग (1-5) *</label>
+              <select id="reviewRating" required>
+                <option value="5">⭐⭐⭐⭐⭐ (5)</option>
+                <option value="4">⭐⭐⭐⭐ (4)</option>
+                <option value="3">⭐⭐⭐ (3)</option>
+                <option value="2">⭐⭐ (2)</option>
+                <option value="1">⭐ (1)</option>
+              </select>
+            </div>
+          </div>
+          <label>ग्राहक ने क्या कहा *</label>
+          <textarea id="reviewText" rows="2" required placeholder="जैसे: बहुत अच्छी सर्विस, समय पर रिपेयर हो गया।"></textarea>
+          <label style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
+            <input type="checkbox" id="reviewActive" checked style="width:auto; margin:0;"> यह रिव्यू वेबसाइट पर दिखाएं
+          </label>
+          <div style="display:flex; gap:10px;">
+            <button type="submit" class="btn primary" id="reviewSubmitBtn">रिव्यू जोड़ें</button>
+            <button type="button" class="btn secondary hidden" id="reviewCancelEdit">Cancel</button>
+          </div>
+        </form>
+      </div>
+      <div class="admin-card">
+        <h3>सभी रिव्यू</h3>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>नाम</th><th>रेटिंग</th><th>बात</th><th>दिख रहा है?</th><th>Action</th></tr></thead>
+            <tbody id="reviewsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
-  const form = document.getElementById('addProductForm');
-  const submitBtn = document.getElementById('submitBtn');
-  const statusMsg = document.getElementById('statusMsg');
+    <!-- ============ TAB: BOOKINGS ============ -->
+    <div id="tab-bookings" class="admin-panel-section">
+      <div class="admin-card">
+        <h3>रिपेयर बुकिंग्स (नई सबसे ऊपर)</h3>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead><tr><th>ID</th><th>नाम</th><th>फोन</th><th>मॉडल</th><th>समस्या</th><th>पसंदीदा समय</th><th>स्टेटस</th><th>समय/नोट</th><th>Action</th></tr></thead>
+            <tbody id="bookingsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    submitBtn.disabled = true;
-    statusMsg.style.color = "#2563eb";
-    statusMsg.textContent = "फोटो प्रोसेसिंग और अपलोड हो रही है...";
-
-    const fileInput = document.getElementById('pImage');
-    const file = fileInput.files[0];
-
-    try {
-      // Compress image automatically before upload
-      const compressedImage = await compressImage(file, 800, 0.7);
-
-      statusMsg.textContent = "डेटाबेस में सेव हो रहा है...";
-
-      await db.collection("mobiles").add({
-        name: document.getElementById('pName').value.trim(),
-        brand: document.getElementById('pBrand').value.trim(),
-        price: parseInt(document.getElementById('pPrice').value),
-        ram_storage: document.getElementById('pRam').value.trim(),
-        network: document.getElementById('pNetwork').value,
-        image_url: compressedImage,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-      statusMsg.style.color = "#16a34a";
-      statusMsg.textContent = "✅ नया मोबाइल सफलतापूर्वक जुड़ गया!";
-      form.reset();
-    } catch (err) {
-      console.error(err);
-      statusMsg.style.color = "#dc2626";
-      statusMsg.textContent = "❌ त्रुटि: " + err.message;
-    } finally {
-      submitBtn.disabled = false;
-    }
-  });
-
-  // Function to resize and compress image
-  function compressImage(file, maxWidth, quality) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = (e) => {
-        const img = new Image();
-        img.src = e.target.result;
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          let width = img.width;
-          let height = img.height;
-
-          if (width > maxWidth) {
-            height = Math.round((height * maxWidth) / width);
-            width = maxWidth;
-          }
-
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext('canvas');
-          ctx.drawImage(img, 0, 0, width, height);
-          resolve(canvas.toDataURL('image/jpeg', quality));
-        };
-        img.onerror = (err) => reject(err);
-      };
-      reader.onerror = (err) => reject(err);
-    });
-  }
-</script>
+  <script type="module" src="admin.js"></script>
 </body>
 </html>

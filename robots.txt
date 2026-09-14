@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://kamal-mobile.vercel.app/sitemap.xml

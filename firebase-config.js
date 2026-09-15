@@ -11,7 +11,7 @@ const firebaseConfig = {
   appId: "1:1065271731721:web:e4163af79a3609a50cbad8"
 };
 
-export const OWNER_UID = "M11a6GJoASSHp4ejxvcSKfCc5QO2";
+export const OWNER_UID = "sNvcKVBpCHaxtYj2LpEAsHrqIsq1";
 export const OWNER_UIDS = [OWNER_UID];
 
 const app = initializeApp(firebaseConfig);

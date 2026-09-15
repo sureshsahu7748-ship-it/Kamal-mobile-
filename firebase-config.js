@@ -1,22 +1,25 @@
- import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
-// फ़ायरबेस प्रोजेक्ट कॉन्फ़िगरेशन
 const firebaseConfig = {
-  apiKey: "AIzaSyAIGqg5dmdDVAzv7x7sMDOfUcxj6iN3Ibw",
+  apiKey: "AIzaSyAyiyB5KLjlqy1sDMA5Aunup9Tvyongqlg",
   authDomain: "kamal-mobile-d8ba5.firebaseapp.com",
   projectId: "kamal-mobile-d8ba5",
   storageBucket: "kamal-mobile-d8ba5.firebasestorage.app",
   messagingSenderId: "1065271731721",
-  appId: "1:1065271731721:web:e4163af79a3609a50cbad8"
+  appId: "1:1065271731721:web:e4163af79a3609a50cbad8",
+  measurementId: "G-97G08P4CBH"
 };
 
-// आपकी नई UID
-export const OWNER_UID = "sNvcKVBpCHaxtYj2LpEAsHrqIsq1";
-export const OWNER_UIDS = [OWNER_UID];
-
-// फ़ायरबेस ऐप्स और सर्विसेज़ इनिशियलाइज़ेशन
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const db = getFirestore(app);
+
+// Export Auth & Firestore
 export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+// आपकी User UID
+export const OWNER_UIDS = [
+  "SC8EYJpqU3UV30QsHGlWSbgHRuJ3"
+];

@@ -1,8 +1,12 @@
  export const WHATSAPP_NUMBER = "919981176713";
 
+// फोटो अपलोड के लिए Cloudinary (मुफ़्त, कार्ड नहीं चाहिए) — SETUP_GUIDE.md देखें
 export const CLOUDINARY_CLOUD_NAME = "kjj21lgx";
 export const CLOUDINARY_UPLOAD_PRESET = "Kamal_Mobile";
 
+
+// रिपेयर की समस्याएं - value वही रहना चाहिए जो <select id="repairIssue"> में options में है
+// docId सिर्फ Firestore में document का नाम है (स्लैश जैसे चिन्ह डॉक्यूमेंट ID में नहीं चल सकते)
 export const REPAIR_ISSUES = [
   { value: "Screen Replacement", label: "फूटी स्क्रीन / टच खराब", docId: "screen_replacement" },
   { value: "Battery Problem", label: "बैटरी जल्दी खत्म होना / फूलना", docId: "battery_problem" },
@@ -14,6 +18,7 @@ export const REPAIR_ISSUES = [
   { value: "Other", label: "अन्य समस्या", docId: "other" }
 ];
 
+// यह लिस्ट तब तक दिखेगी जब तक owner खुद admin panel से सेवाएं न जोड़ें/बदलें
 export const DEFAULT_SERVICES = [
   { icon: "🛠️", title: "हार्डवेयर रिपेयरिंग", description: "फूटी स्क्रीन/डिस्प्ले, बैटरी बदलना, चार्जिंग पिन, स्पीकर/माइक, पानी से खराब मोबाइल।", order: 1 },
   { icon: "💻", title: "सॉफ्टवेयर रिपेयर & अपडेट", description: "मोबाइल हैंग होना, फॉर्मेट, सॉफ्टवेयर अपडेट, वायरस हटाना।", order: 2 },
@@ -26,6 +31,5 @@ export const DEFAULT_SERVICES = [
   { icon: "📲", title: "नया सिम & पोर्ट (MNP)", description: "Jio, Airtel, Vi का नया सिम तुरंत चालू कराएं या पुराना नंबर पोर्ट कराएं।", order: 9 },
   { icon: "📶", title: "मोबाइल / DTH रिचार्ज", description: "सभी कंपनियों का प्रीपेड रिचार्ज और DTH रिचार्ज यहीं करवाएं।", order: 10 },
   { icon: "⌚", title: "स्मार्टवॉच & घड़ियां", description: "फैंसी हाथ घड़ियां, ब्लूटूथ स्मार्टवॉच और उनके पट्टे/सेल उपलब्ध।", order: 11 },
-  { icon: "🧰", title: "कवर, टेम्पर्ड ग्लास & एक्सेसरीज", description: "11D टेम्पर्ड ग्लास, बैक कवर, चार्जर, नेकबैंड और मेमोरी कार्ड।", order: 12 },
-  { icon: "🎥", title: "वीडियोग्राफी & फोटोग्राफी", description: "शादी, जन्मदिन और अन्य कार्यक्रमों की वीडियोग्राफी व फोटोग्राफी सेवा।", order: 13 }
+  { icon: "🧰", title: "कवर, टेम्पर्ड ग्लास & एक्सेसरीज", description: "11D टेम्पर्ड ग्लास, बैक कवर, चार्जर, नेकबैंड और मेमोरी कार्ड।", order: 12 }
 ];
